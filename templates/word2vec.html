@@ -1,0 +1,28 @@
+<table id="test">
+	
+</table>
+
+<script type="text/javascript">
+var a=1
+console.log("hello")
+console.log("window.location.host:",window.location.host)
+var socket = new WebSocket("ws:" + window.location.host + "/word2vec_api");
+socket.onopen = function () {
+	console.log('WebSocket open');//成功连接上Websocket
+	socket.send('adasdasda');//发送数据到服务端
+};
+socket.onmessage = function (e) {
+	console.log('message: ' + e.data);//打印服务端返回的数据
+	let tr = document.createElement('tr')
+	tr.innerHTML = '<td>'+a+':'+e.data+'</tr>'
+	document.getElementById("test").appendChild(tr)
+	a=a+1
+};
+socket.onclose=function(e){
+	console.log(e);
+	socket.close(); //关闭TCP连接
+};
+if (socket.readyState == WebSocket.OPEN) {
+	socket.onopen();
+}
+</script>
