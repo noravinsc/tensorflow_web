@@ -69,6 +69,7 @@ num_classes = 10 # MNIST total classes (0-9 digits)
 
 @accept_websocket
 def word2vec_api(request):
+	print("request.method:",request.method)
 	if request.is_websocket():
 		# tf Graph input
 		X = tf.placeholder("float", [None, timesteps, num_input])
@@ -127,6 +128,8 @@ def word2vec_api(request):
 			print("Testing Accuracy:", \
 				sess.run(accuracy, feed_dict={X: test_data, Y: test_label}))
 			request.websocket.send("Testing Accuracy:",sess.run(accuracy, feed_dict={X: test_data, Y: test_label}))  # 发送给前端的数据
+	if request.method=="GET":
+		return HttpResponse("hello")
 
 def BiRNN(x, weights, biases):
 	
